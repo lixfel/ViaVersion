@@ -64,6 +64,7 @@ import com.viaversion.viaversion.protocols.protocol1_9_1to1_9.Protocol1_9_1To1_9
 import com.viaversion.viaversion.protocols.protocol1_9_3to1_9_1_2.Protocol1_9_3To1_9_1_2;
 import com.viaversion.viaversion.protocols.protocol1_9to1_8.Protocol1_9To1_8;
 import com.viaversion.viaversion.protocols.protocol1_9to1_9_1.Protocol1_9To1_9_1;
+import com.viaversion.viaversion.protocols.protocolNot1_17_1to1_17_1.ProtocolNot1_17_1To1_17_1;
 import com.viaversion.viaversion.util.Pair;
 import io.netty.buffer.ByteBuf;
 import it.unimi.dsi.fastutil.ints.Int2ObjectLinkedOpenHashMap;
@@ -162,6 +163,7 @@ public class ProtocolManagerImpl implements ProtocolManager {
 
         registerProtocol(new Protocol1_17To1_16_4(), ProtocolVersion.v1_17, ProtocolVersion.v1_16_4);
         registerProtocol(new Protocol1_17_1To1_17(), ProtocolVersion.v1_17_1, ProtocolVersion.v1_17);
+        registerProtocol(new ProtocolNot1_17_1To1_17_1(), ProtocolVersion.vNot1_17_1, ProtocolVersion.v1_17_1);
     }
 
     @Override
