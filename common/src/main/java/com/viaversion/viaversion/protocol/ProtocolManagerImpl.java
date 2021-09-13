@@ -115,7 +115,7 @@ public class ProtocolManagerImpl implements ProtocolManager {
 
     public ProtocolManagerImpl() {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setNameFormat("Via-Mappingloader-%d").build();
-        mappingLoaderExecutor = new ThreadPoolExecutor(4, 16, 5L, TimeUnit.SECONDS, new SynchronousQueue<>(), threadFactory);
+        mappingLoaderExecutor = new ThreadPoolExecutor(2, 4, 5L, TimeUnit.SECONDS, new SynchronousQueue<>(), threadFactory);
         mappingLoaderExecutor.allowCoreThreadTimeOut(true);
     }
 
@@ -171,8 +171,7 @@ public class ProtocolManagerImpl implements ProtocolManager {
 
     @Override
     public void registerProtocol(Protocol protocol, List<Integer> supportedClientVersion, int serverVersion) {
-        setupProtocolSupplier(protocol.getClass(), () -> protocol, supportedClientVersion, serverVersion);
-        initializeProtocol(protocol);
+        registerProtocolSupplier(protocol.getClass(), () -> protocol, supportedClientVersion, serverVersion);
     }
 
     @Override
@@ -182,10 +181,8 @@ public class ProtocolManagerImpl implements ProtocolManager {
 
     @Override
     public void registerProtocolSupplier(Class<? extends Protocol> protocolClass, Supplier<Protocol> provider, List<Integer> supportedClientVersion, int serverVersion) {
-        setupProtocolSupplier(protocolClass, new CachedProtocolSupplier(provider), supportedClientVersion, serverVersion);
-    }
+        provider = new CachedProtocolSupplier(provider);
 
-    private void setupProtocolSupplier(Class<? extends Protocol> protocolClass, Supplier<Protocol> provider, List<Integer> supportedClientVersion, int serverVersion) {
         // Clear cache as this may make new routes.
         if (!pathCache.isEmpty()) {
             pathCache.clear();
